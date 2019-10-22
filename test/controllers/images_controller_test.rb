@@ -43,5 +43,6 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get image_path(image.id)
 
     assert_response :ok
+    assert_select 'img', 1
   end
 end
