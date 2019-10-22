@@ -38,4 +38,10 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select '.error', 'is not a valid URL'
   end
 
+  def test_show
+    image = Image.create(url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg')
+    get image_path(image.id)
+
+    assert_response :ok
+  end
 end
