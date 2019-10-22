@@ -49,3 +49,4 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'simple_form'
+gem 'validate_url'
