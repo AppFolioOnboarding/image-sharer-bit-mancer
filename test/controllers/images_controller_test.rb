@@ -1,6 +1,21 @@
 require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
+
+  def test_index
+
+    images = Image.create([
+      { url: 'https://peopledotcom.files.wordpress.com/2017/11/dog.jpg' },
+      { url: 'http://static.businessinsider.com/image/5484d9d1eab8ea3017b17e29/image.jpg' },
+      { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
+    ])
+
+    get images_path
+
+    assert_response :ok
+    assert_select 'img', count: images.count, width: 400
+  end
+
   def test_new
     get new_image_path
 
