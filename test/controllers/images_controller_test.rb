@@ -10,8 +10,8 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_create__succeed
     assert_difference('Image.count', 1) do
-      image_params = {url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg'}
-      post images_path, params: {image: image_params}
+      image_params = { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
+      post images_path, params: { image: image_params }
     end
 
     assert_equal'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg', Image.last.url
@@ -21,7 +21,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_create__fail__blank_url
     assert_no_difference('Image.count') do
-      image_params = {url: ''}
+      image_params = { url: '' }
       post images_path, params: { image: image_params }
     end
 
@@ -31,7 +31,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_create__fail__malformed_url
     assert_no_difference('Image.count') do
-      image_params = {url: 'badprotocol://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg'}
+      image_params = { url: 'badprotocol://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
       post images_path, params: { image: image_params }
     end
 
