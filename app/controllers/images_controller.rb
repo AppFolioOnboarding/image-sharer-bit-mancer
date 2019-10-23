@@ -1,4 +1,9 @@
 class ImagesController < ActionController::Base
+
+  def index
+    raise NotImplementedError
+  end
+
   def new
     @image = Image.new
   end

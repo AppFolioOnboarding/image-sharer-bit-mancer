@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
+
+  def test_index
+    raise NotImplementedError
+  end
+
   def test_new
     get new_image_path
 
