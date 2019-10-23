@@ -1,7 +1,7 @@
 class ImagesController < ActionController::Base
 
   def index
-    raise NotImplementedError
+    @images = Image.all
   end
 
   def new

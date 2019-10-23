@@ -3,7 +3,9 @@ require 'test_helper'
 class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_index
-    raise NotImplementedError
+    get images_path
+
+    assert_response :ok
   end
 
   def test_new
