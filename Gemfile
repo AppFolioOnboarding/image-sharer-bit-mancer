@@ -34,8 +34,6 @@ group :development do
   gem 'pronto-rubocop'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'pry'
-  gem 'pry-byebug'
 end
 
 group :production do
@@ -45,6 +43,9 @@ end
 group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
+end
+
+group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
 end
