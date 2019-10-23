@@ -14,6 +14,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       post images_path, params: {image: image_params}
     end
 
+    assert_equal'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg', Image.last.url
     assert_redirected_to image_path(Image.last)
     assert_equal 'Image successfully saved!', flash[:notice]
   end
