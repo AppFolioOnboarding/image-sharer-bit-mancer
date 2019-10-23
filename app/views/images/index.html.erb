@@ -6,7 +6,7 @@
   <% @images.each do |image| %>
   <tr>
     <td>
-      <%= image_tag image.url %>
+      <%= image_tag image.url, { width: 400 } %>
     </td>
   </tr>
   <% end %>
