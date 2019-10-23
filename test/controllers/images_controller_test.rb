@@ -6,6 +6,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get images_path
 
     assert_response :ok
+    assert_select 'img', Image.count
   end
 
   def test_new

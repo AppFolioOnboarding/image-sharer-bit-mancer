@@ -2,4 +2,12 @@
   <tr>
     <th>Images</th>
   </tr>
+
+  <% @images.each do |image| %>
+  <tr>
+    <td>
+      <%= image_tag image.url %>
+    </td>
+  </tr>
+  <% end %>
 </table>
