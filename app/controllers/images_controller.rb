@@ -1,7 +1,7 @@
 class ImagesController < ActionController::Base
 
   def index
-    @images = Image.all
+    @images = Image.order created_at: :desc
   end
 
   def new
