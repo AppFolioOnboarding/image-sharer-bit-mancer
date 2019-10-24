@@ -23,15 +23,25 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'form', 1
   end
 
-  def test_create__succeed
+  def test_create__succeed__no_tags
     assert_difference('Image.count', 1) do
       image_params = { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
       post images_path, params: { image: image_params }
     end
 
-    assert_equal'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg', Image.last.url
-    assert_redirected_to image_path(Image.last)
-    assert_equal 'Image successfully saved!', flash[:notice]
+    assert_image_creation_with_tags 0, 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg'
+  end
+
+  def test_create__succeed__with_tags
+    [%w[dogs], %w[puppy adult], %w[dog puppy awesome], ['this is just one tag']].each do |tags|
+      assert_difference('Image.count', 1) do
+        image_params = { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg',
+                         tag_list: tags.join(',') }
+        post images_path, params: { image: image_params }
+      end
+
+      assert_image_creation_with_tags tags.count, 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg'
+    end
   end
 
   def test_create__fail__blank_url
@@ -60,5 +70,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
     assert_select 'img', 1
+  end
+
+  private
+
+  def assert_image_creation_with_tags(tags_count, url)
+    assert_equal url, Image.last.url
+    assert_equal tags_count, Image.last.tag_list.count
+    assert_redirected_to image_path(Image.last)
+    assert_equal 'Image successfully saved!', flash[:notice]
   end
 end
