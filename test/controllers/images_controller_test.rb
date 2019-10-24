@@ -3,17 +3,25 @@ require 'test_helper'
 class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_index
-
     images = Image.create([
-      { url: 'https://peopledotcom.files.wordpress.com/2017/11/dog.jpg' },
-      { url: 'http://static.businessinsider.com/image/5484d9d1eab8ea3017b17e29/image.jpg' },
+      { url: 'https://peopledotcom.files.wordpress.com/2017/11/dog.jpg', tag_list: 'not a dog' },
+      { url: 'http://static.businessinsider.com/image/5484d9d1eab8ea3017b17e29/image.jpg', tag_list: 'dog, puppy' },
       { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
     ])
 
     get images_path
 
     assert_response :ok
-    assert_select 'img', count: images.count, width: 400
+
+    assert_select 'img[width=?]', '400', count: images.count
+
+    assert_select 'img.js-image-0[src=?]', images[2].url
+    assert_select 'img.js-image-1[src=?]', images[1].url
+    assert_select 'img.js-image-2[src=?]', images[0].url
+
+    assert_select 'td.js-image-tag-0', text: images[2].tag_list.join(', ')
+    assert_select 'td.js-image-tag-1', text: images[1].tag_list.join(', ')
+    assert_select 'td.js-image-tag-2', text: images[0].tag_list.join(', ')
   end
 
   def test_new
