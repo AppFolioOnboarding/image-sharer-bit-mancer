@@ -1,4 +1,4 @@
-class ImagesController < ActionController::Base
+class ImagesController < ApplicationController
 
   def index
     @images = Image.order created_at: :desc
