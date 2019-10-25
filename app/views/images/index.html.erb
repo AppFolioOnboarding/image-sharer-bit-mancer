@@ -1,12 +1,16 @@
 <table>
   <tr>
     <th>Images</th>
+    <th>Tags</th>
   </tr>
 
-  <% @images.each do |image| %>
+  <% @images.each_with_index do |image, index| %>
   <tr>
     <td>
-      <%= image_tag image.url, { width: 400 } %>
+      <%= image_tag image.url, { width: 400, class: "js-image-#{index}" } %>
+    </td>
+    <td class="js-image-tag-<%=index%>">
+      <%= image.tag_list %>
     </td>
   </tr>
   <% end %>

@@ -1,5 +1,4 @@
 class ImagesController < ApplicationController
-
   def index
     @images = Image.order created_at: :desc
   end
@@ -25,6 +24,6 @@ class ImagesController < ApplicationController
   private
 
   def image_params
-    params.require(:image).permit(:url)
+    params.require(:image).permit(:url, :tag_list)
   end
 end
