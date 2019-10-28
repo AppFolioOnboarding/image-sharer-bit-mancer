@@ -3,25 +3,84 @@ require 'test_helper'
 class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_index
-    images = Image.create([
-      { url: 'https://peopledotcom.files.wordpress.com/2017/11/dog.jpg', tag_list: 'not a dog' },
-      { url: 'http://static.businessinsider.com/image/5484d9d1eab8ea3017b17e29/image.jpg', tag_list: 'dog, puppy' },
-      { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
-    ])
+    images = create_tagged_images
 
     get images_path
 
     assert_response :ok
 
+    assert_equal 3, images.count
     assert_select 'img[width=?]', '400', count: images.count
 
     assert_select 'img.js-image-0[src=?]', images[2].url
     assert_select 'img.js-image-1[src=?]', images[1].url
     assert_select 'img.js-image-2[src=?]', images[0].url
 
-    assert_select 'td.js-image-tag-0', text: images[2].tag_list.join(', ')
-    assert_select 'td.js-image-tag-1', text: images[1].tag_list.join(', ')
-    assert_select 'td.js-image-tag-2', text: images[0].tag_list.join(', ')
+    images[0].tag_list.each do |tag|
+      assert_select 'td.js-image-tag-2 > a', text: tag
+    end
+
+    images[1].tag_list.each do |tag|
+      assert_select 'td.js-image-tag-1 > a', text: tag
+    end
+
+    assert_select 'td.js-image-tag-0 > a', 0
+  end
+
+  def test_index__with_tag__valid_tag
+    images = create_tagged_images
+
+    assert_equal 3, images.count
+
+    get images_path, params: { tag: 'dog' }
+
+    assert_response :ok
+
+    assert_select 'img[width=?]', '400', count: 2
+
+    assert_select 'img[src=?]', images[2].url, count: 0
+    assert_select 'img.js-image-0[src=?]', images[1].url
+    assert_select 'img.js-image-1[src=?]', images[0].url
+
+    assert_select 'td.js-image-tag-0 > a', images[1].tag_list[0]
+    assert_select 'td.js-image-tag-0 > a', images[1].tag_list[1]
+
+    assert_select 'td.js-image-tag-1 > a', images[0].tag_list[1]
+  end
+
+  def test_index__with_tag__empty_tag
+    images = create_tagged_images
+
+    get images_path, params: { tag: '' }
+
+    assert_response :ok
+
+    assert_select 'img[width=?]', '400', count: 3
+
+    assert_equal 3, images.count
+    assert_select 'img.js-image-0[src=?]', images[2].url
+    assert_select 'img.js-image-1[src=?]', images[1].url
+    assert_select 'img.js-image-2[src=?]', images[0].url
+
+    assert_select 'td.js-image-tag-0 > a', 0
+
+    assert_select 'td.js-image-tag-1 > a', images[1].tag_list[0]
+    assert_select 'td.js-image-tag-1 > a', images[1].tag_list[1]
+
+    assert_select 'td.js-image-tag-2 > a', images[0].tag_list[1]
+  end
+
+  def test_index__with_tag__not_matching
+    images = create_tagged_images
+
+    assert_equal 3, images.count
+
+    get images_path, params: { tag: 'not a tag' }
+
+    assert_response :ok
+
+    assert_select 'img', 0
+    assert_select 'td > a', 0
   end
 
   def test_new
@@ -87,5 +146,15 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal tags_count, Image.last.tag_list.count
     assert_redirected_to image_path(Image.last)
     assert_equal 'Image successfully saved!', flash[:notice]
+  end
+
+  def create_tagged_images
+    Image.create(
+        [
+            { url: 'https://peopledotcom.files.wordpress.com/2017/11/dog.jpg', tag_list: 'dog' },
+            { url: 'http://static.businessinsider.com/image/5484d9d1eab8ea3017b17e29/image.jpg', tag_list: 'dog, puppy' },
+            { url: 'https://designerdoginfo.files.wordpress.com/2012/04/puppy-and-adult-dog.jpg' }
+        ]
+    )
   end
 end
