@@ -48,6 +48,28 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'td.js-image-tag-1 > a', images[0].tag_list[1]
   end
 
+  def test_index__with_tag__empty_tag
+    images = create_tagged_images
+
+    get images_path, params: { tag: '' }
+
+    assert_response :ok
+
+    assert_select 'img[width=?]', '400', count: 3
+
+    assert_equal 3, images.count
+    assert_select 'img.js-image-0[src=?]', images[2].url
+    assert_select 'img.js-image-1[src=?]', images[1].url
+    assert_select 'img.js-image-2[src=?]', images[0].url
+
+    assert_select 'td.js-image-tag-0 > a', 0
+
+    assert_select 'td.js-image-tag-1 > a', images[1].tag_list[0]
+    assert_select 'td.js-image-tag-1 > a', images[1].tag_list[1]
+
+    assert_select 'td.js-image-tag-2 > a', images[0].tag_list[1]
+  end
+
   def test_index__with_tag__not_matching
     images = create_tagged_images
 
