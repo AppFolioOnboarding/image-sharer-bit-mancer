@@ -15,17 +15,18 @@ module PageObjects
       end
 
       def delete
-        # TODO
-
-        raise NotImplementedError
+        node.find('.js-delete-link').click
 
         yield node.driver.browser.switch_to.alert
       end
 
       def delete_and_confirm!
-        # TODO
 
-        raise NotImplementedError
+        self.delete do |confirm_dialog|
+          confirm_dialog.accept
+        end
+
+        stale!
 
         window.change_to(IndexPage)
       end

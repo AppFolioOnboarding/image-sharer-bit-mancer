@@ -5,9 +5,11 @@ module PageObjects
 
       collection :images, locator: '.js-images-index', item_locator: '.js-image-card', contains: ImageCard do
         def view!
-          # TODO
+          image_link = element(locator: '.js-image-link')
+          image_link.node.click
 
-          raise NotImplementedError
+          stale!
+          window.change_to(ShowPage)
         end
       end
 

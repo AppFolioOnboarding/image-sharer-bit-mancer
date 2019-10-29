@@ -9,6 +9,7 @@
 <p>
   <%= link_to 'Delete this image', image_path(@image),
               method: :delete,
+              class: 'js-delete-link',
               data: {confirm: 'Are you sure?'} %>
 </p>
 <p>
