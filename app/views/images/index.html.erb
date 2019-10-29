@@ -1,3 +1,7 @@
+<div>
+  <%=link_to 'Create Image', new_image_path %>
+</div>
+
 <table>
   <tr>
     <th>Images</th>
@@ -7,9 +11,9 @@
   <% @images.each_with_index do |image, index| %>
   <tr>
     <td>
-      <%= image_tag image.url, { width: 400, class: "js-image-#{index}" } %>
+      <%= image_tag image.url, { width: 400, class: "js-image js-image-#{index}" } %>
     </td>
-    <td class="js-image-tag-<%=index%>">
+    <td class="js-image-tags js-image-tag-<%=index%>">
       <% image.tag_list.each do |tag| %>
       <%=link_to tag, images_path(tag: tag) %>
       <% end %>
