@@ -6,4 +6,11 @@
 </p>
 <% end %>
 
-<%= link_to 'View all images', images_path %>
+<p>
+  <%= link_to 'Delete this image', image_path(@image),
+              method: :delete,
+              data: {confirm: 'Are you sure?'} %>
+</p>
+<p>
+  <%= link_to 'View all images', images_path %>
+</p>
