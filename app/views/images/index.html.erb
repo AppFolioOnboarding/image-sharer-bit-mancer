@@ -12,7 +12,7 @@
   <% @images.each_with_index do |image, index| %>
   <tr class="js-image-card">
     <td>
-      <%= image_tag image.url, { width: 400, class: "js-image js-image-#{index}" } %>
+      <%= link_to(image_tag(image.url, { width: 400, class: "js-image js-image-#{index}" }), image_path(image), class: 'js-image-link' ) %>
     </td>
     <td class="js-image-tags js-image-tag-<%=index%>">
       <% image.tag_list.each do |tag| %>
