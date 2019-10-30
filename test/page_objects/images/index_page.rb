@@ -20,13 +20,12 @@ module PageObjects
       end
 
       def showing_image?(url:, tags: nil)
-        begin
-          tag_td = node.find(:xpath, "//td[a[img[@src='#{url}']]]/following-sibling::td[contains(@class, 'js-image-tags')]")
-          return tag_td.text == tags.join(' ') if tags.present?
-          true
-        rescue Capybara::ElementNotFound
-          false
-        end
+        tag_td = node.find(:xpath, "//td[a[img[@src='#{url}']]]/following-sibling::td[contains(@class, 'js-image-tags')]")
+        return tag_td.text == tags.join(' ') if tags.present?
+
+        true
+      rescue Capybara::ElementNotFound
+        false
       end
 
       def clear_tag_filter!
