@@ -29,7 +29,7 @@ class ImagesController < ApplicationController
     @image = Image.find(params[:id])
     @image.destroy
 
-    redirect_to images_path
+    redirect_to images_path, notice: 'You have successfully deleted the image.'
   end
 
   private
