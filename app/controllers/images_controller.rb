@@ -23,6 +23,8 @@ class ImagesController < ApplicationController
 
   def show
     @image = Image.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to images_path, notice: 'The image was not found.'
   end
 
   def destroy
@@ -30,6 +32,8 @@ class ImagesController < ApplicationController
     @image.destroy
 
     redirect_to images_path, notice: 'You have successfully deleted the image.'
+  rescue ActiveRecord::RecordNotFound
+    redirect_to images_path, notice: 'The image was not found.'
   end
 
   private
