@@ -1,7 +1,17 @@
-<%= image_tag @image.url %>
+<%= image_tag @image.url, class: 'js-image' %>
 
 <% if @image.tag_list.present? %>
 <p>
-  Tags: <%= @image.tag_list %>
+  Tags: <span class="js-tags"><%= @image.tag_list %></span>
 </p>
 <% end %>
+
+<p>
+  <%= link_to 'Delete this image', image_path(@image),
+              method: :delete,
+              class: 'js-delete-link',
+              data: {confirm: 'Are you sure?'} %>
+</p>
+<p>
+  <%= link_to 'View all images', images_path %>
+</p>

@@ -1,7 +1,7 @@
 <h2>New Image</h2>
 
-<%= simple_form_for @image do |form|  %>
-  <%= form.input :url, label: 'Image URL' %>
-  <%= form.input :tag_list, label: 'Comma-Separated Tags' %>
+<%= simple_form_for @image do |form| %>
+  <%= form.input :url, label: 'Image URL', input_html: { class: 'js-url' } %>
+  <%= form.input :tag_list, label: 'Comma-Separated Tags', input_html: { class: 'js-tags' } %>
   <%= form.button :submit %>
 <% end %>
